@@ -1,19 +1,45 @@
 {
   "name": "terrafe",
   "version": "1.0.0",
-  "description": "TerraFE 是一个现代化 CLI 工具，让开发者通过一条命令即可创建定制化的前端项目架构。它采用“模块化配置”理念，支持主流框架与技术栈自由组合，告别重复的初始化操作",
+  "description": "TerraFE 是一个现代化 CLI 工具，让开发者通过一条命令即可创建定制化的前端项目架构。它采用模块化配置理念，支持主流框架与技术栈自由组合，告别重复的初始化操作",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "type": "module",
   "bin": {
     "terrafe": "./bin/index.js"
   },
-  "type": "module",
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node bin/index.js",
+    "build": "echo \"No build step required\"",
+    "lint": "echo \"No linting configured yet\"",
+    "start": "node bin/index.js"
+  },
+  "keywords": [
+    "cli",
+    "scaffold",
+    "frontend",
+    "template",
+    "generator",
+    "terrafe"
+  ],
+  "author": "TerraFE Team",
+  "license": "MIT",
+  "dependencies": {
     "chalk": "^5.4.1",
-    "commander": "^14.0.0"
-  }
+    "commander": "^14.0.0",
+    "fs-extra": "^11.2.0",
+    "validate-npm-package-name": "^5.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terrafe/cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/terrafe/cli/issues"
+  },
+  "homepage": "https://github.com/terrafe/cli#readme"
 }
