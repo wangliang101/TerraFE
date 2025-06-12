@@ -1,0 +1,19 @@
+{
+  "name": "terrafe",
+  "version": "1.0.0",
+  "description": "TerraFE 是一个现代化 CLI 工具，让开发者通过一条命令即可创建定制化的前端项目架构。它采用“模块化配置”理念，支持主流框架与技术栈自由组合，告别重复的初始化操作",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "terrafe": "./bin/index.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0"
+  }
+}
