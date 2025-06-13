@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-TerraFE 是一个现代化的前端项目脚手架工具，类似于 Vue CLI，支持快速创建各种前端项目模板。项目采用模块化设计，支持内置模板和从 GitHub 拉取远程模板。
+TerraFE 是一个轻量级的前端项目脚手架工具，专注于简化前端人员项目搭建的难度。主要功能是从 GitHub 拉取高质量的前端项目模板，通过交互式命令行帮助用户快速定制项目配置（如修改 package.json 中的项目名称等参数）。
 
 ## 核心功能设计
 
@@ -11,52 +11,40 @@ TerraFE 是一个现代化的前端项目脚手架工具，类似于 Vue CLI，�
 #### 1.1 项目创建功能
 
 - **基础项目创建**: `terrafe create <project-name>`
-- **交互式项目配置**: 引导用户选择框架、模板、功能特性
-- **静默创建模式**: 通过预设配置快速创建项目
+- **交互式项目配置**: 引导用户选择框架、模板类型
+- **模板参数定制**: 交互式修改项目名称、描述、作者等信息
 - **项目名称验证**: 检查项目名称合法性和目录冲突
 
 #### 1.2 模板管理系统
 
-- **内置模板库**: 预置常用的前端项目模板
-- **远程模板支持**: 从 GitHub/GitLab 等仓库拉取模板
-- **模板版本管理**: 支持指定模板版本
-- **自定义模板**: 用户可以添加和管理自己的模板
-- **模板搜索和预览**: 查看可用模板列表和详情
+- **GitHub 模板拉取**: 从 GitHub 仓库拉取模板
+- **内置优质模板库**: 预置基于 Vite 的高质量模板
+- **模板本地缓存**: 拉取过的模板自动缓存到本地，提升二次使用速度
+- **缓存管理**: 支持清理、更新缓存
 
-#### 1.3 框架支持
+#### 1.3 智能包管理器检测
 
-- **React 生态**:
-  - Create React App 模板
-  - Next.js 模板
-  - Vite + React 模板
-  - React Native 模板
-- **Vue 生态**:
-  - Vue 3 + Vite 模板
-  - Nuxt.js 模板
-  - Vue 2 兼容模板
-- **其他框架**:
-  - Angular 模板
-  - Svelte/SvelteKit 模板
-  - Vanilla JS 模板
-  - Node.js 后端模板
+- **自动检测**: 根据模板自动检测最适合的包管理器（pnpm > yarn > npm）
+- **用户偏好**: 支持用户在配置中设置首选包管理器
+- **智能降级**: 当首选包管理器不可用时，自动降级到可用的包管理器
 
-#### 1.4 功能特性配置
+#### 1.4 内置模板支持
 
-- **TypeScript 支持**: 可选择是否使用 TypeScript
-- **CSS 预处理器**: Sass、Less、Stylus 支持
-- **UI 框架集成**: Ant Design、Element Plus、Material-UI 等
-- **状态管理**: Redux、Vuex、Pinia、Zustand 等
-- **路由配置**: React Router、Vue Router 等
-- **构建工具**: Webpack、Vite、Rollup 等
-- **代码规范**: ESLint、Prettier、Husky 预配置
-- **测试框架**: Jest、Vitest、Cypress 等
+- **Vite 生态系统**: 基于 Vite 的高性能模板
+  - Vanilla TypeScript (vite-ts)
+  - React + TypeScript (vite-react-ts)
+  - Vue 3 + TypeScript (vite-vue-ts)
+  - Svelte + TypeScript (vite-svelte-ts)
+  - Preact + TypeScript (vite-preact-ts)
+- **特色模板**: 来自 awesome-vite 精选的优质模板
 
-#### 1.5 插件系统
+#### 1.5 模板参数定制
 
-- **插件架构**: 可扩展的插件系统
-- **官方插件**: 常用功能的官方插件
-- **社区插件**: 第三方插件生态
-- **插件管理**: 安装、卸载、更新插件
+- **项目基础信息**: 项目名称、描述、版本号
+- **作者信息**: 作者姓名、邮箱
+- **许可证选择**: MIT、ISC、Apache-2.0 等
+- **Git 初始化**: 可选择是否初始化 Git 仓库
+- **依赖安装**: 可选择是否自动安装依赖
 
 ## 详细开发计划
 

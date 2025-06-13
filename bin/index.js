@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 // 导入命令实现
 import { createProject, validateCreateOptions } from '../lib/commands/create.js';
 import { configCommand, showConfigHelp } from '../lib/commands/config.js';
+import { templateCommand, showTemplateHelp } from '../lib/commands/template.js';
 
 // 导入核心模块
 import logger from '../lib/utils/logger.js';
@@ -68,20 +69,27 @@ async function main() {
       .command('create <project-name>')
       .alias('c')
       .description('创建新项目')
-      .option('-t, --template <name>', '指定模板名称', 'basic')
+      .option('-t, --template <name>', '指定内置模板名称')
       .option('-p, --template-path <path>', '指定本地模板路径')
-      .option('-m, --package-manager <pm>', '指定包管理器 (npm, yarn, pnpm)')
+      .option('-r, --repo <repo>', '指定 GitHub 仓库 (owner/repo)')
+      .option('-m, --package-manager <pm>', '指定包管理器 (auto, npm, yarn, pnpm)', 'auto')
       .option('-d, --description <desc>', '项目描述')
       .option('-a, --author <author>', '项目作者')
       .option('--version <version>', '项目版本', '1.0.0')
       .option('-l, --license <license>', '项目许可证', 'MIT')
       .option('-f, --force', '强制覆盖现有目录')
+      .option('-y, --yes', '跳过交互式询问，使用默认值')
       .option('--skip-git', '跳过Git初始化')
       .option('--skip-install', '跳过依赖安装')
       .action(async (projectName, options) => {
         // 合并全局选项
         const globalOptions = program.opts();
         const mergedOptions = { ...options, ...globalOptions };
+
+        // 处理GitHub仓库选项
+        if (options.repo) {
+          mergedOptions.customRepo = options.repo;
+        }
 
         // 验证参数
         if (!validateCreateOptions(projectName, mergedOptions)) {
@@ -159,17 +167,92 @@ async function main() {
       showConfigHelp();
     });
 
+    // template 命令组
+    const templateCmd = program.command('template').alias('tpl').description('模板管理');
+
+    templateCmd
+      .command('list')
+      .alias('ls')
+      .description('列出所有模板')
+      .option('--category <type>', '模板类别 (official|community|custom|all)', 'all')
+      .action(async (options) => {
+        const globalOptions = program.opts();
+        await templateCommand('list', null, null, { ...options, ...globalOptions });
+      });
+
+    templateCmd
+      .command('add [name] [repo]')
+      .description('添加自定义模板')
+      .option('--description <desc>', '模板描述')
+      .option('--tags <tags>', '标签 (用逗号分隔)')
+      .option('--no-test', '跳过模板下载测试')
+      .action(async (name, repo, options) => {
+        const globalOptions = program.opts();
+        await templateCommand('add', name, repo, { ...options, ...globalOptions });
+      });
+
+    templateCmd
+      .command('remove [name]')
+      .alias('rm')
+      .description('删除模板（支持所有类型）')
+      .option('-f, --force', '强制删除')
+      .action(async (name, options) => {
+        const globalOptions = program.opts();
+        await templateCommand('remove', name, null, { ...options, ...globalOptions });
+      });
+
+    templateCmd
+      .command('restore [category]')
+      .description('恢复默认模板 (official|community|all)')
+      .option('-f, --force', '强制恢复')
+      .action(async (category, options) => {
+        const globalOptions = program.opts();
+        await templateCommand('restore', category, null, { ...options, ...globalOptions });
+      });
+
+    templateCmd
+      .command('search <keyword>')
+      .description('搜索模板')
+      .option('--category <type>', '搜索范围 (official|community|custom|all)', 'all')
+      .action(async (keyword, options) => {
+        const globalOptions = program.opts();
+        await templateCommand('search', keyword, null, { ...options, ...globalOptions });
+      });
+
+    templateCmd
+      .command('info <name>')
+      .description('显示模板详细信息')
+      .action(async (name, options) => {
+        const globalOptions = program.opts();
+        await templateCommand('info', name, null, { ...options, ...globalOptions });
+      });
+
+    templateCmd
+      .command('test <name>')
+      .description('测试模板下载')
+      .action(async (name, options) => {
+        const globalOptions = program.opts();
+        await templateCommand('test', name, null, { ...options, ...globalOptions });
+      });
+
+    // 添加模板命令的默认行为
+    templateCmd.action(() => {
+      showTemplateHelp();
+    });
+
     // 自定义帮助信息
     program.on('--help', () => {
       logger.newLine();
       logger.info('示例:');
-      logger.info(`  ${chalk.cyan('terrafe create my-app')}                    创建新项目`);
-      logger.info(`  ${chalk.cyan('terrafe create my-vue-app -t vue3')}        使用Vue3模板创建项目`);
-      logger.info(`  ${chalk.cyan('terrafe config list')}                      查看所有配置`);
-      logger.info(`  ${chalk.cyan('terrafe config set packageManager yarn')}  设置包管理器为yarn`);
+      logger.info(`  ${chalk.cyan('terrafe create my-app')}                      创建新项目`);
+      logger.info(`  ${chalk.cyan('terrafe create my-vue-app -t vue3')}          使用Vue3模板创建项目`);
+      logger.info(`  ${chalk.cyan('terrafe template add my-vue antfu/vitesse')}  添加自定义模板`);
+      logger.info(`  ${chalk.cyan('terrafe template list')}                      查看所有模板`);
+      logger.info(`  ${chalk.cyan('terrafe config list')}                        查看所有配置`);
+      logger.info(`  ${chalk.cyan('terrafe config set packageManager yarn')}    设置包管理器为yarn`);
       logger.newLine();
       logger.info('获取更多帮助:');
-      logger.info(`  ${chalk.cyan('terrafe <command> --help')}                 查看命令详细帮助`);
+      logger.info(`  ${chalk.cyan('terrafe <command> --help')}                   查看命令详细帮助`);
       logger.newLine();
     });
 
