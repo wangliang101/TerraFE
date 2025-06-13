@@ -8,7 +8,9 @@
     "terrafe": "./bin/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "dev": "node bin/index.js",
     "build": "echo \"No build step required\"",
     "lint": "echo \"No linting configured yet\"",
@@ -34,7 +36,10 @@
     "ora": "^7.0.1",
     "handlebars": "^4.7.8"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0"
+  },
   "engines": {
     "node": ">=16.0.0"
   },
@@ -45,5 +50,19 @@
   "bugs": {
     "url": "https://github.com/terrafe/cli/issues"
   },
-  "homepage": "https://github.com/terrafe/cli#readme"
+  "homepage": "https://github.com/terrafe/cli#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {},
+    "testMatch": [
+      "**/__tests__/**/*.test.js",
+      "**/?(*.)+(spec|test).js"
+    ],
+    "collectCoverageFrom": [
+      "lib/**/*.js",
+      "bin/**/*.js",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ]
+  }
 }
